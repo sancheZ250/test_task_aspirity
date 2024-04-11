@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  # Сервис для PostgreSQL
+  db:
+    container_name: my_db_container
+    build:
+      context: ./pg_db  # Путь к контексту с Dockerfile базы данных
+    ports:
+      - "5432:5432"  # Проброс портов
+    volumes:
+      - pg_data:/var/lib/postgresql/data  # Подключаем том для данных PostgreSQL
+
+  # Сервис для Python
+  app:
+    container_name: my_app_container
+    build:
+      context: ./app  # Путь к контексту с Dockerfile приложения
+    depends_on:
+      - db  # Указываем зависимость от сервиса с базой данных
+    environment:
+      DB_HOST: db  # Имя хоста для подключения к базе данных
+      DB_PORT: 5432  # Порт для подключения к базе данных
+      DB_NAME: mydatabase
+      DB_USER: myuser
+      DB_PASSWORD: mypass
+    command: [ "sh", "-c", "./start_app.sh" ]
+    restart: "no"
+volumes:
+  pg_data:  # Определение тома для данных PostgreSQL
