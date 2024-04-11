@@ -10,7 +10,7 @@ services:
       - "5432:5432"  # Проброс портов
     volumes:
       - pg_data:/var/lib/postgresql/data  # Подключаем том для данных PostgreSQL
-    stop_signal: SIGTERM # Фиксит проблему, описанную в README
+    stop_signal: SIGTERM # Вроде фиксит проблему, описанную в README, контейнер с базой данных останавливается после App
 
   # Сервис для Python
   app:
